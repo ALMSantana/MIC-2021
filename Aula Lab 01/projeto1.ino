@@ -1,5 +1,4 @@
 
-
 float distanciaCm = 0;
 int GPIO_TRIGGER = 10;
 int GPIO_ECHO = 11;
