@@ -1,13 +1,9 @@
-float distanciaCm = 0;
-int GPIO_TRIGGER = 10;
-int GPIO_ECHO = 11;
-int GPIO_LED = 2;
-float LIMITE_DISTANCIA = 30.0;
+
 
 float distanciaCm = 0;
 int GPIO_TRIGGER = 10;
 int GPIO_ECHO = 11;
-int GPIO_LED = 2;
+int GPIO_LED = 3;
 float LIMITE_DISTANCIA = 30.0;
 
 float lerSensorUltrassonico(int triggerPin, int echoPin){
@@ -22,21 +18,17 @@ float lerSensorUltrassonico(int triggerPin, int echoPin){
   return pulseIn(echoPin, HIGH);
 }
 
-void alterarLED(int ledPin, int estadoLed){
-	digitalWrite(ledPin, estadoLed);
-}
 
 void notificarDistancia(int ledPin, float distancia){
-  if(distancia <= LIMITE_DISTANCIA){
-  	alterarLED(ledPin, true);
-  }else{
-  	alterarLED(ledPin, false);
+  if(distancia <= LIMITE_DISTANCIA && distancia != 0){
+  	alterarLED(GPIO_LED, HIGH);
   }
 }
 
 void setup(){
   Serial.begin(9600);
-
+  pinMode(GPIO_LED, OUTPUT);
+  digitalWrite(GPIO_LED, LOW);
 }
 
 void loop(){ 
@@ -45,31 +37,9 @@ void loop(){
   
   Serial.print(distanciaCm);
   Serial.println("cm");
-  delay(100); // Wait for 100 millisecond(s)
+  delay(1000); // Wait for 100 millisecond(s)
 }
 
 void alterarLED(int ledPin, int estadoLed){
 	digitalWrite(ledPin, estadoLed);
-}
-
-void notificarDistancia(int ledPin, float distancia){
-  if(distancia <= LIMITE_DISTANCIA){
-  	alterarLED(ledPin, true);
-  }else{
-  	alterarLED(ledPin, false);
-  }
-}
-
-void setup(){
-  Serial.begin(9600);
-
-}
-
-void loop(){ 
-  distanciaCm = 0.01723 * lerSensorUltrassonico(GPIO_TRIGGER, GPIO_ECHO);
-  notificarDistancia(GPIO_LED, distanciaCm);
-  
-  Serial.print(distanciaCm);
-  Serial.println("cm");
-  delay(100); // Wait for 100 millisecond(s)
 }
